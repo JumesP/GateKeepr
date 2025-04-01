@@ -14,4 +14,8 @@ router.get('/', (req, res) => {
 
 app.listen(env.PORT, () => {
     console.log(`Server is running on port ${env.PORT}`);
+// Routes
+const authRouter = require("./src/routes/authRoutes");
+app.use("/auth", authRouter);
+
 })
