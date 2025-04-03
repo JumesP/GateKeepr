@@ -18,6 +18,7 @@ router.get('/', (req, res) => {
 });
 
 router.get('/protected', authenticationToken, (req, res) => {
+    // the response for this will include the UserID which can be used on the clients database of stored data
     const userData = req.user;
     res.json({ message: 'This is a protected route', user: userData });
 });
