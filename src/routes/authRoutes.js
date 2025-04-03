@@ -18,7 +18,8 @@ router.get('/', (req, res) => {
 });
 
 router.get('/protected', authenticationToken, (req, res) => {
-    res.send('This is a protected route');
+    const userData = req.user;
+    res.json({ message: 'This is a protected route', user: userData });
 });
 
 module.exports = router;
