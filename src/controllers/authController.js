@@ -10,19 +10,6 @@ const path = require('path');
     crud is an acronym for create, read, update, and delete
 `
 
-//  Register a new user
-// exports.register = async (req, res) => {
-//     try {
-//         const { name, email, password } = req.body;
-//         const user = new User({ name, email, password });
-//         await user.save();
-//         const token = await user.generateAuthToken();
-//         res.status(201).send({ user, token });
-//     } catch (error) {
-//         res.status(400).send(error);
-//     }
-// }
-
 const registerUser = async (req, res) => {
     try {
         const {name, email, password} = req.body;
