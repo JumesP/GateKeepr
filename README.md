@@ -54,3 +54,11 @@ Additionally there will be docs added to the project to help with understanding.
 - The server will run on `http://localhost:3000` by default
 - You can use Postman or any other API testing tool to test the endpoints
 - The API documentation is available in the `docs` folder
+
+## Dev Notes
+
+### To-Do List
+
+- Add detailed API documentation
+- Add tests
+- Add DDOS protection
