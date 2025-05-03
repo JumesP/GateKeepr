@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Login and Protected Route Test</title>
+</head>
+<body>
+    <form id="loginForm">
+        <input type="email" name="email" placeholder="Enter your email" required>
+        <input type="password" name="password" placeholder="Enter your password" required>
+        <button type="submit">Login</button>
+    </form>
+
+    <button id="fetchDataButton" style="display:none;">Fetch Protected Data</button>
+    <div id="protectedData"></div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const email = event.target.email.value;
+            const password = event.target.password.value;
+
+            try {
+                const response = await fetch('http://localhost:4000/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Login failed');
+                }
+
+                const data = await response.json();
+                localStorage.setItem('token', data.token);
+                alert('Login successful');
+                document.getElementById('fetchDataButton').style.display = 'block';
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        });
+
+        document.getElementById('fetchDataButton').addEventListener('click', async function() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                alert('No token found');
+                return;
+            }
+
+            try {
+                const response = await fetch('http://localhost:4000/auth/protected', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch protected data');
+                }
+
+                const data = await response.json();
+                document.getElementById('protectedData').innerText = JSON.stringify(data, null, 2);
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        });
+    </script>
+</body>
+</html>
