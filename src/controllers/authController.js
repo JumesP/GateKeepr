@@ -12,7 +12,6 @@ const createUserModel = require("../models/userModel");
 const registerUser = async (req, res) => {
     try {
         const { username, password, application, userID } = req.body;
-        console.log("Registering user:", { username, application, userID });
 
         if (!username || !password || !application || !userID) {
             return res.status(400).json({ message: "Please enter all fields" });
@@ -27,7 +26,7 @@ const registerUser = async (req, res) => {
 
         const salt = await bcrypt.genSalt();
         const hashedPassword = await bcrypt.hash(password, salt);
-        const newUser = new User({ username, password: hashedPassword, userID: UserID });
+        const newUser = new User({ username, password: hashedPassword, userID: userID });
         const savedUser = await newUser.save();
 
         const token = jwt.sign({ id: savedUser._id }, process.env.JWT_SECRET);
@@ -62,7 +61,7 @@ const loginUser = async (req, res) => {
         console.log("Collection name:", application + "_User");
 
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
-        res.status(201).json({ token, user: { id: user._id, username: user.username } });
+        res.status(201).json({ token, user: { id: user._id, username: user.username, userID: user.userID } });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
