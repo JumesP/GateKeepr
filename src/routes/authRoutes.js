@@ -13,13 +13,7 @@ const authenticationToken = require('../middlewares/authenticationToken');
 router.post('/register', registerUser);
 router.post('/login', loginUser);
 
-router.get('/logout', (req, res) => {
-    // Handle logout logic here, e.g., clearing session or token
-    res.json({ message: 'User logged out successfully' });
-});
-
 router.get('/', (req, res) => {
-    console.log('Base route accessed');
     res.send('Base Route');
 });
 
