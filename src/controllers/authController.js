@@ -11,9 +11,9 @@ const createUserModel = require("../models/userModel");
 
 const registerUser = async (req, res) => {
     try {
-        const { username, password, application } = req.body;
+        const { username, password, application, UserID } = req.body;
 
-        if (!username || !password || !application) {
+        if (!username || !password || !application || !UserID) {
             return res.status(400).json({ message: "Please enter all fields" });
         }
 
@@ -26,11 +26,11 @@ const registerUser = async (req, res) => {
 
         const salt = await bcrypt.genSalt();
         const hashedPassword = await bcrypt.hash(password, salt);
-        const newUser = new User({ username, password: hashedPassword });
+        const newUser = new User({ username, password: hashedPassword, userID: UserID });
         const savedUser = await newUser.save();
 
         const token = jwt.sign({ id: savedUser._id }, process.env.JWT_SECRET);
-        res.status(201).json({ token, user: { id: savedUser._id, username: savedUser.username } });
+        res.status(201).json({ token, user: { id: savedUser._id, username: savedUser.username, userID: savedUser.userID } });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

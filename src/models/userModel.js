@@ -11,6 +11,7 @@ const createUserModel = (applicationName) => {
     const userSchema = new Schema({
         username: { type: String, required: true, unique: true },
         password: { type: String, required: true },
+        userID: { type: Number, required: true },
     }, { timestamps: true });
 
     return mongoose.model(modelName, userSchema);
