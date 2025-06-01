@@ -14,6 +14,7 @@ router.post('/register', registerUser);
 router.post('/login', loginUser);
 
 router.get('/', (req, res) => {
+    console.log('Base route accessed');
     res.send('Base Route');
 });
 

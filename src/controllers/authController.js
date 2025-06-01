@@ -12,6 +12,7 @@ const createUserModel = require("../models/userModel");
 `
 
 const registerUser = async (req, res) => {
+    console.log("Register request received");
     try {
         const { name, email, password, application } = req.body;
 
@@ -40,6 +41,7 @@ const registerUser = async (req, res) => {
 
 //  Login an existing user
 const loginUser = async (req, res) => {
+    console.log("Login request received");
     try {
         const { email, password, application } = req.body;
 
