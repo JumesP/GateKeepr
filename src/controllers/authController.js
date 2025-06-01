@@ -11,9 +11,10 @@ const createUserModel = require("../models/userModel");
 
 const registerUser = async (req, res) => {
     try {
-        const { username, password, application, UserID } = req.body;
+        const { username, password, application, userID } = req.body;
+        console.log("Registering user:", { username, application, userID });
 
-        if (!username || !password || !application || !UserID) {
+        if (!username || !password || !application || !userID) {
             return res.status(400).json({ message: "Please enter all fields" });
         }
 
