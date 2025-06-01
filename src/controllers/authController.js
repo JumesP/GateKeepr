@@ -1,8 +1,6 @@
-const User = require("../models/userModel");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const path = require('path');
 const createUserModel = require("../models/userModel");
 
 `
@@ -13,26 +11,26 @@ const createUserModel = require("../models/userModel");
 
 const registerUser = async (req, res) => {
     try {
-        const { name, email, password, application } = req.body;
+        const { username, password, application } = req.body;
 
-        if (!name || !email || !password || !application) {
+        if (!username || !password || !application) {
             return res.status(400).json({ message: "Please enter all fields" });
         }
 
         const User = createUserModel(application);
 
-        const existingUser = await User.findOne({ email });
+        const existingUser = await User.findOne({ username });
         if (existingUser) {
             return res.status(400).json({ message: "User already exists" });
         }
 
         const salt = await bcrypt.genSalt();
         const hashedPassword = await bcrypt.hash(password, salt);
-        const newUser = new User({ name, email, password: hashedPassword });
+        const newUser = new User({ username, password: hashedPassword });
         const savedUser = await newUser.save();
 
         const token = jwt.sign({ id: savedUser._id }, process.env.JWT_SECRET);
-        res.status(201).json({ token, user: { id: savedUser._id, name: savedUser.name, email: savedUser.email } });
+        res.status(201).json({ token, user: { id: savedUser._id, username: savedUser.username } });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -41,15 +39,15 @@ const registerUser = async (req, res) => {
 //  Login an existing user
 const loginUser = async (req, res) => {
     try {
-        const { email, password, application } = req.body;
+        const { username, password, application } = req.body;
 
-        if (!email || !password || !application) {
+        if (!username || !password || !application) {
             return res.status(400).json({ message: "Please enter all fields" });
         }
 
         const User = createUserModel(application);
 
-        const user = await User.findOne({ email });
+        const user = await User.findOne({ username });
         if (!user) {
             return res.status(400).json({message: "User does not exist"});
         }
@@ -63,7 +61,7 @@ const loginUser = async (req, res) => {
         console.log("Collection name:", application + "_User");
 
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
-        res.status(201).json({ token, user: { id: user._id, name: user.name, email: user.email } });
+        res.status(201).json({ token, user: { id: user._id, username: user.username } });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
