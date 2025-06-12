@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const createUserModel = require("../models/userModel");
+const { createUserModel } = require("../models/userModel.js");
 
 `
     this controller is responsible for handling the logic of the product routes
