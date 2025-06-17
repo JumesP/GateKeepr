@@ -17,7 +17,7 @@ mongoose.connect(env.MONGO_URI)
 .catch(err => console.log(err));
 
 app.get('/', (req, res) => {
-    res.send('Hello World');
+    res.send('🔑 Gatekeepr Authentication Service is Online');
 });
 
 // Routes
